@@ -1,0 +1,20 @@
+# Mac files
+.DS_Store
+
+# Eclipse project files
+/.project
+/.pydevproject
+/.buildpath
+/.settings
+
+# VSCode files
+/.vscode
+*.code-workspace
+
+# Terraform files
+*.terraform.lock.hcl
+*.tfstate*
+
+# Extra files
+/tmp/
+*.log
