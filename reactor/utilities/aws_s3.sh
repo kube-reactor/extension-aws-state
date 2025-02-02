@@ -18,11 +18,14 @@ function destroy_remote_state_aws_s3 () {
 }
 
 function get_remote_state_aws_s3 () {
+  local project_type="$1"
   local options=(
     "-backend-config="bucket=${AWS_STATE_BUCKET_NAME}""
     "-backend-config="kms_key_id=${AWS_STATE_KMS_KEY_ID}""
     "-backend-config="dynamodb_table=${AWS_STATE_BUCKET_NAME}""
     "-backend-config="region=${AWS_STATE_PRIMARY_REGION}""
+    "-backend-config="key="${project_type}/terraform.tfstate"""
+    "-backend-config="encrypt=true""
   )
   echo "${options[@]}"
 }
