@@ -1,7 +1,7 @@
 
 function ensure_remote_state_aws_s3 () {
   if [ ! "$AWS_STATE_KMS_KEY_ID" ]; then
-    provisioner_create state "${__aws_state_project_dir}"
+    provisioner_create state "${__aws_state_project_dir}" local
     sed -i -e \
       "s/AWS_STATE_KMS_KEY_ID\=\"\"/AWS_STATE_KMS_KEY_ID\=\"$(jq -r ".kms_key.value" "${__env_dir}/state.json")\"/" \
       "${__env_dir}/secret.sh"
@@ -10,7 +10,7 @@ function ensure_remote_state_aws_s3 () {
 
 function destroy_remote_state_aws_s3 () {
   if [ "$AWS_STATE_KMS_KEY_ID" ]; then
-    provisioner_destroy state "${__aws_state_project_dir}"
+    provisioner_destroy state "${__aws_state_project_dir}" local
     sed -i -e \
       "s/AWS_STATE_KMS_KEY_ID\=\"${AWS_STATE_KMS_KEY_ID}\"/AWS_STATE_KMS_KEY_ID\=\"\"/" \
       "${__env_dir}/secret.sh"
