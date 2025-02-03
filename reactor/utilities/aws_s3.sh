@@ -2,8 +2,10 @@
 function ensure_remote_state_aws_s3 () {
   if [ ! "$AWS_STATE_KMS_KEY_ID" ]; then
     provisioner_create state "${__aws_state_project_dir}" local
+
+    export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/state.json")"
     sed -i -e \
-      "s/AWS_STATE_KMS_KEY_ID\=\"\"/AWS_STATE_KMS_KEY_ID\=\"$(jq -r ".kms_key.value" "${__env_dir}/state.json")\"/" \
+      "s/AWS_STATE_KMS_KEY_ID\=\"\"/AWS_STATE_KMS_KEY_ID\=\"${AWS_STATE_KMS_KEY_ID}\"/" \
       "${__env_dir}/secret.sh"
   fi
 }
