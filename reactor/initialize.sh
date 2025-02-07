@@ -11,7 +11,7 @@ export __aws_state_terraform_dir="${__aws_state_extension_dir}/terraform"
 export __aws_state_project_dir="${__aws_state_terraform_dir}/state"
 export __terraform_state_file="${__aws_state_terraform_dir}/state.tf"
 
-if [ "$STATE_PROVIDER" == "aws_s3" ]; then
+if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
   #
   # AWS
   #
