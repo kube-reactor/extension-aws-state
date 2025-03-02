@@ -20,3 +20,59 @@ resource "aws_iam_user_policy_attachment" "remote_state_access" {
   user       = aws_iam_user.terraform.name
   policy_arn = module.remote_state.terraform_iam_policy.arn
 }
+
+resource "aws_iam_user_policy_attachment" "remote_state_access" {
+  user       = aws_iam_user.terraform.name
+  policy_arn = aws_iam_policy.policy.arn
+}
+
+data "aws_iam_policy_document" "policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["ec2:**"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["elasticloadbalancing:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["cloudwatch:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["autoscaling:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["iam:CreateServiceLinkedRole"]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:AWSServiceName"
+
+      values = [
+        "autoscaling.amazonaws.com",
+        "ec2scheduled.amazonaws.com",
+        "elasticloadbalancing.amazonaws.com",
+        "spot.amazonaws.com",
+        "spotfleet.amazonaws.com",
+        "transitgateway.amazonaws.com"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_policy" "policy" {
+  name        = "EksAllPolicy"
+  description = "A test policy"
+  policy      = data.aws_iam_policy_document.policy.json
+}
