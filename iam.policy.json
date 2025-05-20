@@ -1,10 +1,10 @@
 {
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "VisualEditor0",
-			"Effect": "Allow",
-			"Action": [
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
         "iam:CreateUser",
         "iam:CreateAccessKey",
         "iam:CreateRole",
@@ -23,9 +23,9 @@
         "iam:GetUser",
         "iam:GetRole",
         "iam:GetPolicy",
-				"iam:GetPolicyVersion",
+        "iam:GetPolicyVersion",
         "iam:AttachUserPolicy",
-				"iam:AttachRolePolicy",
+        "iam:AttachRolePolicy",
         "iam:PassRole",
         "iam:TagUser",
         "iam:TagRole",
@@ -34,7 +34,7 @@
         "iam:DeleteAccessKey",
         "iam:DeleteRole",
         "iam:DeletePolicy",
-				"iam:DetachUserPolicy",
+        "iam:DetachUserPolicy",
         "iam:DetachRolePolicy",
         "iam:UntagUser",
         "iam:UntagRole",
@@ -59,7 +59,7 @@
         "s3:GetBucketTagging",
         "s3:GetBucketWebsite",
         "s3:GetBucketVersioning",
-				"s3:GetBucketAcl",
+        "s3:GetBucketAcl",
         "s3:GetBucketCORS",
         "s3:GetLifecycleConfiguration",
         "s3:GetReplicationConfiguration",
@@ -70,14 +70,14 @@
         "s3:GetBucketPublicAccessBlock",
         "s3:GetBucketObjectLockConfiguration",
         "s3:PutBucketTagging",
-				"s3:PutBucketVersioning",
+        "s3:PutBucketVersioning",
         "s3:PutBucketAcl",
         "s3:PutLifecycleConfiguration",
         "s3:PutReplicationConfiguration",
         "s3:PutEncryptionConfiguration",
-				"s3:PutBucketPublicAccessBlock",
+        "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketOwnershipControls",
-				"s3:PutBucketPolicy",
+        "s3:PutBucketPolicy",
         "s3:DeleteBucket",
         "s3:DeleteBucketPolicy",
         "dynamodb:CreateTable",
@@ -93,14 +93,14 @@
         "dynamodb:Query",
         "dynamodb:UpdateTable",
         "dynamodb:UpdateItem",
-				"dynamodb:UpdateContinuousBackups",
-				"dynamodb:TagResource",
+        "dynamodb:UpdateContinuousBackups",
+        "dynamodb:TagResource",
         "dynamodb:DeleteTable",
         "dynamodb:DeleteTableReplica",
         "dynamodb:DeleteItem",
         "dynamodb:UntagResource"
-			],
-			"Resource": "*"
-		}
-	]
+      ],
+      "Resource": "*"
+    }
+  ]
 }
