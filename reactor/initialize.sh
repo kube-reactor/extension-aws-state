@@ -12,18 +12,6 @@ export __aws_state_project_dir="${__aws_state_terraform_dir}/state"
 export __terraform_state_file="${__aws_state_terraform_dir}/state.tf"
 
 if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
-  #
-  # AWS
-  #
-  export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-}"
-  export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-}"
-
-  if [[ ! "$AWS_ACCESS_KEY_ID" ]] || [[ ! "$AWS_SECRET_ACCESS_KEY" ]]; then
-    emergency "To provision AWS resources, you must specify AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables"
-  fi
-  #
-  # State
-  #
   export AWS_STATE_PRIMARY_REGION="${AWS_STATE_PRIMARY_REGION:-"us-east-1"}"
   export AWS_STATE_SECONDARY_REGION="${AWS_STATE_SECONDARY_REGION:-"us-west-1"}"
 
