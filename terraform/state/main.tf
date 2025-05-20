@@ -1,5 +1,6 @@
 module "remote_state" {
   source                  = "nozaq/remote-state-s3-backend/aws"
+  version                 = "1.6.1"
   override_s3_bucket_name = true
   s3_bucket_name          = var.bucket_name
   s3_bucket_name_replica  = "${var.bucket_name}-replica"
