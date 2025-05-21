@@ -15,20 +15,56 @@ variable "replica_region" {
   default     = "us-west-1"
 }
 
-variable "terraform_user" {
-  description = "The username of the user that provisions infrastructure through Terraform."
+variable "platform_write_user" {
+  description = "The username of the user that provisions infrastructure."
   type        = string
-  default     = "TerraformUser"
+  default     = "PlatformDeployer"
 }
 
-variable "terraform_group" {
-  description = "The group that contains the policies for provisioning infrastructure through Terraform."
+variable "platform_write_group" {
+  description = "The group that contains the policies for provisioning infrastructure."
   type        = string
-  default     = "TerraformGroup"
+  default     = "PlatformManagement"
 }
 
-variable "terraform_policy" {
-  description = "The AWS IAM policy JSON document to allow the Terraform provisioning into the AWS environment"
+variable "platform_write_policy" {
+  description = "The AWS IAM policy JSON document to allow the platform provisioning into the AWS environment"
+  type        = string
+  default     = ""
+}
+
+variable "container_write_user" {
+  description = "The username of the user that provisions and pulls application container images."
+  type        = string
+  default     = "ContainerDeployer"
+}
+
+variable "container_write_group" {
+  description = "The group that contains the policies for provisioning and pulling application container images."
+  type        = string
+  default     = "ContainerManagement"
+}
+
+variable "container_write_policy" {
+  description = "The AWS IAM policy JSON document to allow the provisioning and pulling application container images in the AWS environment"
+  type        = string
+  default     = ""
+}
+
+variable "container_read_user" {
+  description = "The username of the user that pulls application container images."
+  type        = string
+  default     = "ContainerAccessor"
+}
+
+variable "container_read_group" {
+  description = "The group that contains the policies for pulling application container images."
+  type        = string
+  default     = "ContainerAccess"
+}
+
+variable "container_read_policy" {
+  description = "The AWS IAM policy JSON document to allow pulling application container images in the AWS environment"
   type        = string
   default     = ""
 }
