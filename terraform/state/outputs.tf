@@ -8,6 +8,11 @@ output "kms_key_alias" {
   value       = module.remote_state.kms_key_alias
 }
 
+output "kms_key_replica" {
+  description = "The KMS customer master key to encrypt replica bucket and dynamodb."
+  value       = module.remote_state.kms_key_replica
+}
+
 output "state_bucket" {
   description = "The S3 bucket to store the remote state file."
   value       = module.remote_state.state_bucket.bucket
@@ -21,14 +26,4 @@ output "replica_bucket" {
 output "dynamodb_table" {
   description = "The DynamoDB table to manage lock states."
   value       = module.remote_state.dynamodb_table
-}
-
-output "kms_key_replica" {
-  description = "The KMS customer master key to encrypt replica bucket and dynamodb."
-  value       = module.remote_state.kms_key_replica
-}
-
-output "terraform_iam_policy" {
-  description = "The IAM Policy to access remote state environment."
-  value       = module.remote_state.terraform_iam_policy
 }
