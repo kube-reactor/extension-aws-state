@@ -20,7 +20,7 @@ function ensure_remote_state_aws_s3 () {
   export AWS_ACCESS_KEY_ID="$AWS_STATE_ACCESS_KEY_ID"
   export AWS_SECRET_ACCESS_KEY="$AWS_STATE_SECRET_ACCESS_KEY"
 
-  if [ ! "$AWS_STATE_KMS_KEY_ID" ]; then
+  if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ ! "$AWS_STATE_KMS_KEY_ID" ]]; then
     provisioner_create state "${__aws_state_project_dir}" local
 
     export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/state.json")"
