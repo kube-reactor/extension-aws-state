@@ -20,3 +20,15 @@ variable "terraform_user" {
   type        = string
   default     = "TerraformUser"
 }
+
+variable "terraform_group" {
+  description = "The group that contains the policies for provisioning infrastructure through Terraform."
+  type        = string
+  default     = "TerraformGroup"
+}
+
+variable "terraform_policy" {
+  description = "The AWS IAM policy JSON document to allow the Terraform provisioning into the AWS environment"
+  type        = string
+  default     = ""
+}
