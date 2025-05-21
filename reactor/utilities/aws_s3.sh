@@ -23,7 +23,7 @@ function ensure_remote_state_aws_s3 () {
   if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ ! "$AWS_STATE_KMS_KEY_ID" ]]; then
     provisioner_create state "${__aws_state_project_dir}" local
 
-    export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/state.json")"
+    export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/state.output.json")"
     sed -i -e \
       "s/AWS_STATE_KMS_KEY_ID\=\"\"/AWS_STATE_KMS_KEY_ID\=\"${AWS_STATE_KMS_KEY_ID}\"/" \
       "${__env_dir}/secret.sh"
@@ -68,7 +68,9 @@ function destroy_remote_state_aws_s3 () {
       aws iam delete-access-key --user-name "$AWS_TERRAFORM_USER" --access-key-id "$access_key_id"
     done
     provisioner_destroy state "${__aws_state_project_dir}" local
-    rm -f "${__env_dir}/aws.json"
+    rm -f "${__env_dir}/platform.write.json"
+    rm -f "${__env_dir}/container.write.json"
+    rm -f "${__env_dir}/container.read.json"
 
     unset AWS_STATE_KMS_KEY_ID
     sed -i -E -e \
