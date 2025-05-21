@@ -28,8 +28,6 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
 
     if [ -f "${__env_dir}/iam.platform.write.json" ]; then
       export TF_VAR_platform_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.platform.write.json")"
-      echo "platform write policy"
-      echo "$TF_VAR_platform_write_policy"
     fi
   fi
 
@@ -39,8 +37,6 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
 
     if [ -f "${__env_dir}/iam.container.write.json" ]; then
       export TF_VAR_container_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.write.json")"
-      echo "container write policy"
-      echo "$TF_VAR_container_write_policy"
     fi
   fi
 
@@ -50,8 +46,6 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
 
     if [ -f "${__env_dir}/iam.container.read.json" ]; then
       export TF_VAR_container_read_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.read.json")"
-      echo "container read policy"
-      echo "$TF_VAR_container_read_policy"
     fi
   fi
 fi
