@@ -29,18 +29,24 @@ function ensure_remote_state_aws_s3 () {
       "${__env_dir}/secret.sh"
   fi
 
+  if [ ! -f "${__env_dir}/container.write.json" ]; then
+    aws iam create-access-key --user-name "$AWS_CONTAINER_WRITE_USER" >"${__env_dir}/container.write.json"
+  fi
+  if [ ! -f "${__env_dir}/container.read.json" ]; then
+    aws iam create-access-key --user-name "$AWS_CONTAINER_READ_USER" >"${__env_dir}/container.read.json"
+  fi
+
   if [[ ! "$aws_access_key_id" ]] || [[ ! "$aws_secret_access_key" ]]; then
-    if [ ! -f "${__env_dir}/aws.json" ]; then
-      echo "creating access key"
-      aws iam create-access-key --user-name "$AWS_TERRAFORM_USER" >"${__env_dir}/aws.json"
+    if [ ! -f "${__env_dir}/platform.write.json" ]; then
+       aws iam create-access-key --user-name "$AWS_PLATFORM_WRITE_USER" >"${__env_dir}/platform.write.json"
     fi
 
-    export AWS_ACCESS_KEY_ID="$(jq -r ".AccessKey.AccessKeyId" "${__env_dir}/aws.json")"
+    export AWS_ACCESS_KEY_ID="$(jq -r ".AccessKey.AccessKeyId" "${__env_dir}/platform.write.json")"
     sed -i -E -e \
       "s?AWS_ACCESS_KEY_ID\=\"[^\"]*\"?AWS_ACCESS_KEY_ID\=\"${AWS_ACCESS_KEY_ID}\"?" \
       "${__env_dir}/secret.sh"
 
-    export AWS_SECRET_ACCESS_KEY="$(jq -r ".AccessKey.SecretAccessKey" "${__env_dir}/aws.json")"
+    export AWS_SECRET_ACCESS_KEY="$(jq -r ".AccessKey.SecretAccessKey" "${__env_dir}/platform.write.json")"
     sed -i -E -e \
       "s?AWS_SECRET_ACCESS_KEY\=\"[^\"]*\"?AWS_SECRET_ACCESS_KEY\=\"${AWS_SECRET_ACCESS_KEY}\"?" \
       "${__env_dir}/secret.sh"
@@ -57,7 +63,7 @@ function destroy_remote_state_aws_s3 () {
   export AWS_ACCESS_KEY_ID="$AWS_STATE_ACCESS_KEY_ID"
   export AWS_SECRET_ACCESS_KEY="$AWS_STATE_SECRET_ACCESS_KEY"
 
-  if [ "$AWS_STATE_KMS_KEY_ID" ]; then
+  if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ "$AWS_STATE_KMS_KEY_ID" ]]; then
     for access_key_id in $(aws iam list-access-keys --user-name "$AWS_TERRAFORM_USER" --query "AccessKeyMetadata[].AccessKeyId" --output "text"); do
       aws iam delete-access-key --user-name "$AWS_TERRAFORM_USER" --access-key-id "$access_key_id"
     done

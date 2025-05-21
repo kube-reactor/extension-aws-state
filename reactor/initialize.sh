@@ -22,10 +22,36 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
   export TF_VAR_region="$AWS_STATE_PRIMARY_REGION"
   export TF_VAR_replica_region="$AWS_STATE_SECONDARY_REGION"
 
-  export TF_VAR_terraform_user="$AWS_TERRAFORM_USER"
-  export TF_VAR_terraform_group="$AWS_TERRAFORM_GROUP"
+  if [[ "${AWS_PLATFORM_WRITE_USER:-}" ]] && [[ "${AWS_PLATFORM_WRITE_GROUP:-}" ]]; then
+    export TF_VAR_platform_write_user="$AWS_PLATFORM_WRITE_USER"
+    export TF_VAR_platform_write_group="$AWS_PLATFORM_WRITE_GROUP"
 
-  if [ -f "${__env_dir}/iam.policy.json" ]; then
-    export TF_VAR_terraform_policy="$(cat "${__env_dir}/iam.policy.json")"
+    if [ -f "${__env_dir}/iam.platform.write.json" ]; then
+      export TF_VAR_platform_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.platform.write.json")"
+      echo "platform write policy"
+      echo "$TF_VAR_platform_write_policy"
+    fi
+  fi
+
+  if [[ "${AWS_CONTAINER_WRITE_USER:-}" ]] && [[ "${AWS_CONTAINER_WRITE_GROUP:-}" ]]; then
+    export TF_VAR_container_write_user="$AWS_CONTAINER_WRITE_USER"
+    export TF_VAR_container_write_group="$AWS_CONTAINER_WRITE_GROUP"
+
+    if [ -f "${__env_dir}/iam.container.write.json" ]; then
+      export TF_VAR_container_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.write.json")"
+      echo "container write policy"
+      echo "$TF_VAR_container_write_policy"
+    fi
+  fi
+
+  if [[ "${AWS_CONTAINER_READ_USER:-}" ]] && [[ "${AWS_CONTAINER_READ_GROUP:-}" ]]; then
+    export TF_VAR_container_read_user="$AWS_CONTAINER_READ_USER"
+    export TF_VAR_container_read_group="$AWS_CONTAINER_READ_GROUP"
+
+    if [ -f "${__env_dir}/iam.container.read.json" ]; then
+      export TF_VAR_container_read_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.read.json")"
+      echo "container read policy"
+      echo "$TF_VAR_container_read_policy"
+    fi
   fi
 fi
