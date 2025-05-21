@@ -23,4 +23,9 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
   export TF_VAR_replica_region="$AWS_STATE_SECONDARY_REGION"
 
   export TF_VAR_terraform_user="$AWS_TERRAFORM_USER"
+  export TF_VAR_terraform_group="$AWS_TERRAFORM_GROUP"
+
+  if [ -f "${__env_dir}/iam.policy.json" ]; then
+    export TF_VAR_terraform_policy="$(cat "${__env_dir}/iam.policy.json")"
+  fi
 fi
