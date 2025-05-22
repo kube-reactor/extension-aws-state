@@ -26,8 +26,8 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
     export TF_VAR_platform_write_user="$AWS_PLATFORM_WRITE_USER"
     export TF_VAR_platform_write_group="$AWS_PLATFORM_WRITE_GROUP"
 
-    if [ -f "${__env_dir}/iam.platform.write.json" ]; then
-      export TF_VAR_platform_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.platform.write.json")"
+    if [ -f "${__env_dir}/policy.iam.platform.write.json" ]; then
+      export TF_VAR_platform_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/policy.iam.platform.write.json")"
     fi
   fi
 
@@ -35,8 +35,8 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
     export TF_VAR_container_write_user="$AWS_CONTAINER_WRITE_USER"
     export TF_VAR_container_write_group="$AWS_CONTAINER_WRITE_GROUP"
 
-    if [ -f "${__env_dir}/iam.container.write.json" ]; then
-      export TF_VAR_container_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.write.json")"
+    if [ -f "${__env_dir}/policy.iam.container.write.json" ]; then
+      export TF_VAR_container_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/policy.iam.container.write.json")"
     fi
   fi
 
@@ -44,8 +44,8 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
     export TF_VAR_container_read_user="$AWS_CONTAINER_READ_USER"
     export TF_VAR_container_read_group="$AWS_CONTAINER_READ_GROUP"
 
-    if [ -f "${__env_dir}/iam.container.read.json" ]; then
-      export TF_VAR_container_read_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/iam.container.read.json")"
+    if [ -f "${__env_dir}/policy.iam.container.read.json" ]; then
+      export TF_VAR_container_read_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/policy.iam.container.read.json")"
     fi
   fi
 fi
