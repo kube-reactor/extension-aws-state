@@ -23,30 +23,30 @@ function ensure_remote_state_aws_s3 () {
   if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ ! "$AWS_STATE_KMS_KEY_ID" ]]; then
     provisioner_create state "${__aws_state_project_dir}" local
 
-    export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/state.output.json")"
+    export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/output.state.json")"
     sed -i -e \
       "s/AWS_STATE_KMS_KEY_ID\=\"\"/AWS_STATE_KMS_KEY_ID\=\"${AWS_STATE_KMS_KEY_ID}\"/" \
       "${__env_dir}/secret.sh"
   fi
 
-  if [ ! -f "${__env_dir}/container.write.json" ]; then
-    aws iam create-access-key --user-name "$AWS_CONTAINER_WRITE_USER" >"${__env_dir}/container.write.json"
+  if [ ! -f "${__env_dir}/cred.container.write.json" ]; then
+    aws iam create-access-key --user-name "$AWS_CONTAINER_WRITE_USER" >"${__env_dir}/cred.container.write.json"
   fi
-  if [ ! -f "${__env_dir}/container.read.json" ]; then
-    aws iam create-access-key --user-name "$AWS_CONTAINER_READ_USER" >"${__env_dir}/container.read.json"
+  if [ ! -f "${__env_dir}/cred.container.read.json" ]; then
+    aws iam create-access-key --user-name "$AWS_CONTAINER_READ_USER" >"${__env_dir}/cred.container.read.json"
   fi
 
   if [[ ! "$aws_access_key_id" ]] || [[ ! "$aws_secret_access_key" ]]; then
-    if [ ! -f "${__env_dir}/platform.write.json" ]; then
-       aws iam create-access-key --user-name "$AWS_PLATFORM_WRITE_USER" >"${__env_dir}/platform.write.json"
+    if [ ! -f "${__env_dir}/cred.platform.write.json" ]; then
+       aws iam create-access-key --user-name "$AWS_PLATFORM_WRITE_USER" >"${__env_dir}/cred.platform.write.json"
     fi
 
-    export AWS_ACCESS_KEY_ID="$(jq -r ".AccessKey.AccessKeyId" "${__env_dir}/platform.write.json")"
+    export AWS_ACCESS_KEY_ID="$(jq -r ".AccessKey.AccessKeyId" "${__env_dir}/cred.platform.write.json")"
     sed -i -E -e \
       "s?AWS_ACCESS_KEY_ID\=\"[^\"]*\"?AWS_ACCESS_KEY_ID\=\"${AWS_ACCESS_KEY_ID}\"?" \
       "${__env_dir}/secret.sh"
 
-    export AWS_SECRET_ACCESS_KEY="$(jq -r ".AccessKey.SecretAccessKey" "${__env_dir}/platform.write.json")"
+    export AWS_SECRET_ACCESS_KEY="$(jq -r ".AccessKey.SecretAccessKey" "${__env_dir}/cred.platform.write.json")"
     sed -i -E -e \
       "s?AWS_SECRET_ACCESS_KEY\=\"[^\"]*\"?AWS_SECRET_ACCESS_KEY\=\"${AWS_SECRET_ACCESS_KEY}\"?" \
       "${__env_dir}/secret.sh"
@@ -68,9 +68,9 @@ function destroy_remote_state_aws_s3 () {
       aws iam delete-access-key --user-name "$AWS_TERRAFORM_USER" --access-key-id "$access_key_id"
     done
     provisioner_destroy state "${__aws_state_project_dir}" local
-    rm -f "${__env_dir}/platform.write.json"
-    rm -f "${__env_dir}/container.write.json"
-    rm -f "${__env_dir}/container.read.json"
+    rm -f "${__env_dir}/cred.platform.write.json"
+    rm -f "${__env_dir}/cred.container.write.json"
+    rm -f "${__env_dir}/cred.container.read.json"
 
     unset AWS_STATE_KMS_KEY_ID
     sed -i -E -e \
