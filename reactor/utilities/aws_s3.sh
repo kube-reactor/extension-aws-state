@@ -64,8 +64,14 @@ function destroy_remote_state_aws_s3 () {
   export AWS_SECRET_ACCESS_KEY="$AWS_STATE_SECRET_ACCESS_KEY"
 
   if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ "$AWS_STATE_KMS_KEY_ID" ]]; then
-    for access_key_id in $(aws iam list-access-keys --user-name "$AWS_TERRAFORM_USER" --query "AccessKeyMetadata[].AccessKeyId" --output "text"); do
-      aws iam delete-access-key --user-name "$AWS_TERRAFORM_USER" --access-key-id "$access_key_id"
+    for access_key_id in $(aws iam list-access-keys --user-name "$AWS_PLATFORM_WRITE_USER" --query "AccessKeyMetadata[].AccessKeyId" --output "text"); do
+      aws iam delete-access-key --user-name "$AWS_PLATFORM_WRITE_USER" --access-key-id "$access_key_id"
+    done
+    for access_key_id in $(aws iam list-access-keys --user-name "$AWS_CONTAINER_WRITE_USER" --query "AccessKeyMetadata[].AccessKeyId" --output "text"); do
+      aws iam delete-access-key --user-name "$AWS_CONTAINER_WRITE_USER" --access-key-id "$access_key_id"
+    done
+    for access_key_id in $(aws iam list-access-keys --user-name "$AWS_CONTAINER_READ_USER" --query "AccessKeyMetadata[].AccessKeyId" --output "text"); do
+      aws iam delete-access-key --user-name "$AWS_CONTAINER_READ_USER" --access-key-id "$access_key_id"
     done
     provisioner_destroy state "${__aws_state_project_dir}" local
     rm -f "${__env_dir}/cred.platform.write.json"
