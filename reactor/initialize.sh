@@ -31,10 +31,20 @@ if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
     fi
   fi
 
-  if [ "${AWS_CONTAINER_WRITE_USER:-}" ]; then
+  if [[ "${AWS_CONTAINER_WRITE_USER:-}" ]] && [[ "${AWS_CONTAINER_WRITE_GROUP:-}" ]]; then
     export TF_VAR_container_write_user="$AWS_CONTAINER_WRITE_USER"
+    export TF_VAR_container_write_group="$AWS_CONTAINER_WRITE_GROUP"
+
+    if [ -f "${__env_dir}/policy.iam.container.write.json" ]; then
+      export TF_VAR_container_write_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/policy.iam.container.write.json")"
+    fi
   fi
-  if [ "${AWS_CONTAINER_READ_USER:-}" ]; then
+  if [[ "${AWS_CONTAINER_READ_USER:-}" ]] && [[ "${AWS_CONTAINER_READ_GROUP:-}" ]]; then
     export TF_VAR_container_read_user="$AWS_CONTAINER_READ_USER"
+    export TF_VAR_container_read_group="$AWS_CONTAINER_READ_GROUP"
+
+    if [ -f "${__env_dir}/policy.iam.container.read.json" ]; then
+      export TF_VAR_container_read_policy="$(envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < "${__env_dir}/policy.iam.container.read.json")"
+    fi
   fi
 fi
