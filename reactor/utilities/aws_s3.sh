@@ -22,6 +22,7 @@ function ensure_remote_state_aws_s3 () {
 
   if [[ "${REACTOR_FORCE_STATE_UPDATE:-}" ]] || [[ ! "$AWS_STATE_KMS_KEY_ID" ]]; then
     provisioner_create state "${__aws_state_project_dir}" local
+    sleep 30 # Give AWS time to propogate any IAM policies before continuing
 
     export AWS_STATE_KMS_KEY_ID="$(jq -r ".kms_key.value" "${__env_dir}/output.state.json")"
     sed -i -e \
