@@ -48,46 +48,6 @@ resource "aws_iam_user" "container_writer" {
   name = var.container_write_user
 }
 
-resource "aws_iam_group" "container_writer" {
-  name = var.container_write_group
-  path = "/container/"
-}
-
-resource "aws_iam_group_membership" "container_writer" {
-  name  = "container-deployer-group"
-  group = aws_iam_group.container_writer.name
-  users = [
-    aws_iam_user.container_writer.name,
-  ]
-}
-
-resource "aws_iam_group_policy" "container_writer" {
-  count  = var.container_write_policy == "" ? 0 : 1
-  name   = "ContainerManagementPolicy"
-  policy = var.container_write_policy
-  group  = aws_iam_group.container_writer.name
-}
-
 resource "aws_iam_user" "container_reader" {
   name = var.container_read_user
-}
-
-resource "aws_iam_group" "container_reader" {
-  name = var.container_read_group
-  path = "/container/"
-}
-
-resource "aws_iam_group_membership" "container_reader" {
-  name  = "container-access-group"
-  group = aws_iam_group.container_reader.name
-  users = [
-    aws_iam_user.container_reader.name,
-  ]
-}
-
-resource "aws_iam_group_policy" "container_reader" {
-  count  = var.container_read_policy == "" ? 0 : 1
-  name   = "ContainerAccessPolicy"
-  policy = var.container_read_policy
-  group  = aws_iam_group.container_reader.name
 }

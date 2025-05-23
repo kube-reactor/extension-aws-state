@@ -39,32 +39,8 @@ variable "container_write_user" {
   default     = "ContainerDeployer"
 }
 
-variable "container_write_group" {
-  description = "The group that contains the policies for provisioning and pulling application container images."
-  type        = string
-  default     = "ContainerManagement"
-}
-
-variable "container_write_policy" {
-  description = "The AWS IAM policy JSON document to allow the provisioning and pulling application container images in the AWS environment"
-  type        = string
-  default     = ""
-}
-
 variable "container_read_user" {
   description = "The username of the user that pulls application container images."
   type        = string
   default     = "ContainerAccessor"
-}
-
-variable "container_read_group" {
-  description = "The group that contains the policies for pulling application container images."
-  type        = string
-  default     = "ContainerAccess"
-}
-
-variable "container_read_policy" {
-  description = "The AWS IAM policy JSON document to allow pulling application container images in the AWS environment"
-  type        = string
-  default     = ""
 }
