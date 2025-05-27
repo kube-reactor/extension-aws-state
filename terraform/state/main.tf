@@ -1,13 +1,15 @@
 module "remote_state" {
-  source                             = "nozaq/remote-state-s3-backend/aws"
-  version                            = "1.6.1"
-  override_s3_bucket_name            = true
-  s3_bucket_name                     = var.bucket_name
-  s3_bucket_name_replica             = "${var.bucket_name}-replica"
-  override_terraform_iam_policy_name = true
-  terraform_iam_policy_name          = "TerraformStateAccessPolicy"
-  kms_key_alias                      = var.bucket_name
-  dynamodb_table_name                = var.bucket_name
+  source                               = "nozaq/remote-state-s3-backend/aws"
+  version                              = "1.6.1"
+  override_s3_bucket_name              = true
+  s3_bucket_name                       = var.bucket_name
+  s3_bucket_name_replica               = "${var.bucket_name}-replica"
+  s3_bucket_force_destroy              = true
+  override_terraform_iam_policy_name   = true
+  terraform_iam_policy_name            = "TerraformStateAccessPolicy"
+  kms_key_alias                        = var.bucket_name
+  dynamodb_table_name                  = var.bucket_name
+  dynamodb_deletion_protection_enabled = false
 
   providers = {
     aws         = aws
