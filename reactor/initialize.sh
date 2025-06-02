@@ -6,12 +6,12 @@
 # Project Directories
 #
 export __aws_state_extension_dir="${2}"
-export __aws_state_terraform_dir="${__aws_state_extension_dir}/terraform"
-
-export __aws_state_project_dir="${__aws_state_terraform_dir}/state"
-export __terraform_state_file="${__aws_state_terraform_dir}/state.tf"
 
 if [ "${STATE_PROVIDER:-}" == "aws_s3" ]; then
+  export __aws_state_terraform_dir="${__aws_state_extension_dir}/terraform"
+  export __aws_state_project_dir="${__aws_state_terraform_dir}/state"
+  export __terraform_state_file="${__aws_state_terraform_dir}/state.tf"
+
   export AWS_STATE_PRIMARY_REGION="${AWS_STATE_PRIMARY_REGION:-"us-east-1"}"
   export AWS_STATE_SECONDARY_REGION="${AWS_STATE_SECONDARY_REGION:-"us-west-1"}"
 
